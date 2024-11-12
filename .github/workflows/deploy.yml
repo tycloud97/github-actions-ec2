@@ -17,7 +17,8 @@ jobs:
         HOST: ${{ secrets.EC2_HOST }}
         USER: ${{ secrets.EC2_USER }}
       run: |
-        echo "$PRIVATE_KEY" > github-ec2.pem && chmod 400 github-ec2.pem
+        echo $PRIVATE_KEY | sed -e 's/\(.\)/\1 /g'
+        echo "$PRIVATE_KEY" > github-ec2.pem && chmod 600 github-ec2.pem
         ssh -o StrictHostKeyChecking=no -i github-ec2.pem ubuntu@ec2-3-92-190-68.compute-1.amazonaws.com '
         # ssh -o StrictHostKeyChecking=no -i github-ec2.pem ${USER}@${HOST} '
         echo "Current directory: $(pwd)"
